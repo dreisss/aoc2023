@@ -1,12 +1,25 @@
+const SPELLED_NUMBERS: [&str; 9] = [
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+];
+
 /// program logic:
-/// take each line and filter to numeric only
+/// take each line, transform each spelled number into digits and filter to numeric only
 /// join first and last from this filter
 /// sum this value for all lines
 pub fn solution(input: &str) -> u32 {
     input
         .lines()
         .map(|line| -> u32 {
-            let filtered_line: Vec<char> = line.chars().filter(|c| c.is_numeric()).collect();
+            let mut parsed_line = line.to_string();
+
+            for (i, number) in SPELLED_NUMBERS.iter().enumerate() {
+                parsed_line = parsed_line.replace(
+                    number,
+                    &format!("{}{}{}", number, (i + 1).to_string(), number),
+                );
+            }
+
+            let filtered_line: Vec<char> = parsed_line.chars().filter(|c| c.is_numeric()).collect();
             let mut result = String::new();
 
             result.push(*filtered_line.first().unwrap());
@@ -23,16 +36,16 @@ mod tests {
 
     #[test]
     fn test_solution() {
-        const TEST_INPUT: &str = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet";
-        const EXPECTED: u32 = 142;
+        const TEST_INPUT: &str = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
+        const EXPECTED: u32 = 281;
 
         assert!(solution(TEST_INPUT) == EXPECTED);
     }
 
     #[test]
     fn test_solution_final() {
-        const INPUT: &str = include_str!("../../inputs/01/a.txt");
-        const EXPECTED: u32 = 55002;
+        const INPUT: &str = include_str!("../../inputs/01/b.txt");
+        const EXPECTED: u32 = 55093;
 
         assert!(solution(INPUT) == EXPECTED);
     }
