@@ -13,10 +13,8 @@ pub fn solution(input: &str) -> u32 {
             let mut parsed_line = line.to_string();
 
             for (i, number) in SPELLED_NUMBERS.iter().enumerate() {
-                parsed_line = parsed_line.replace(
-                    number,
-                    &format!("{}{}{}", number, (i + 1).to_string(), number),
-                );
+                parsed_line =
+                    parsed_line.replace(number, &format!("{}{}{}", number, i + 1, number));
             }
 
             let filtered_line: Vec<char> = parsed_line.chars().filter(|c| c.is_numeric()).collect();
@@ -44,7 +42,7 @@ mod tests {
 
     #[test]
     fn test_solution_final() {
-        const INPUT: &str = include_str!("../../inputs/01/b.txt");
+        const INPUT: &str = include_str!("../../inputs/day01/part2.txt");
         const EXPECTED: u32 = 55093;
 
         assert!(solution(INPUT) == EXPECTED);

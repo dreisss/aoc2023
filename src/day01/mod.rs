@@ -1,2 +1,2 @@
-mod a;
-mod b;
+mod part1;
+mod part2;
