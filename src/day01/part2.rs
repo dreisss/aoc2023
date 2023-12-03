@@ -6,6 +6,7 @@ const SPELLED_NUMBERS: [&str; 9] = [
 /// take each line, transform each spelled number into digits and filter to numeric only
 /// join first and last from this filter
 /// sum this value for all lines
+#[allow(dead_code)]
 pub fn solution(input: &str) -> u32 {
     input
         .lines()
@@ -42,7 +43,7 @@ mod tests {
 
     #[test]
     fn test_solution_final() {
-        const INPUT: &str = include_str!("../../inputs/day01/part2.txt");
+        const INPUT: &str = include_str!("../../inputs/day01.txt");
         const EXPECTED: u32 = 55093;
 
         assert!(solution(INPUT) == EXPECTED);
