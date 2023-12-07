@@ -7,26 +7,24 @@ const SPELLED_NUMBERS: [&str; 9] = [
 /// join first and last from this filter
 /// sum this value for all lines
 #[allow(dead_code)]
-pub fn solution(input: &str) -> u32 {
-    input
-        .lines()
-        .map(|line| -> u32 {
-            let mut parsed_line = line.to_string();
+pub fn solution(input: &str) -> i32 {
+    fn get_calibration_value(line: &str) -> i32 {
+        let mut parsed_line = line.to_string();
 
-            for (i, number) in SPELLED_NUMBERS.iter().enumerate() {
-                parsed_line =
-                    parsed_line.replace(number, &format!("{}{}{}", number, i + 1, number));
-            }
+        for (i, number) in SPELLED_NUMBERS.iter().enumerate() {
+            parsed_line = parsed_line.replace(number, &format!("{}{}{}", number, i + 1, number));
+        }
 
-            let filtered_line: Vec<char> = parsed_line.chars().filter(|c| c.is_numeric()).collect();
-            let mut result = String::new();
+        let numbers_only: Vec<char> = parsed_line.chars().filter(|c| c.is_numeric()).collect();
+        let mut result = String::new();
 
-            result.push(*filtered_line.first().unwrap());
-            result.push(*filtered_line.last().unwrap());
+        result.push(*numbers_only.first().unwrap());
+        result.push(*numbers_only.last().unwrap());
 
-            result.parse().unwrap()
-        })
-        .sum()
+        result.parse().unwrap()
+    }
+
+    input.lines().map(|l| get_calibration_value(l)).sum()
 }
 
 #[cfg(test)]
@@ -36,7 +34,7 @@ mod tests {
     #[test]
     fn test_solution() {
         const TEST_INPUT: &str = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
-        const EXPECTED: u32 = 281;
+        const EXPECTED: i32 = 281;
 
         assert!(solution(TEST_INPUT) == EXPECTED);
     }
@@ -44,7 +42,7 @@ mod tests {
     #[test]
     fn test_solution_final() {
         const INPUT: &str = include_str!("../../inputs/day01.txt");
-        const EXPECTED: u32 = 55093;
+        const EXPECTED: i32 = 55093;
 
         assert!(solution(INPUT) == EXPECTED);
     }
